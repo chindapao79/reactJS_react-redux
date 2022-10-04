@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import { centralStore } from './redux/store/CentralStore';
 export const baseURL = 'https://jsonplaceholder.typicode.com/';
+export const baseAPIGIB = 'https://api.github.com/gists';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

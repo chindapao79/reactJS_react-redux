@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Button, Card, Container, Form, Nav, Navbar, Table } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Routes, Link, useParams, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-
 import { connect } from 'react-redux'
 import { fetchArticle } from '../../src/redux/action/FetchArticle'
 export class Menu extends Component {
@@ -22,7 +21,7 @@ export class Menu extends Component {
     return (
       <>
         <Router>
-          <Navigator />
+          <Navigator data={newArticle} />
           <Routes>
             <Route path='' element={<Home />} />
             <Route path='/users' element={<Users data={newArticle} />} />
@@ -90,7 +89,19 @@ export function ViewId() {
 }
 
 
-export function Navigator() {
+export function Navigator({ data }) {
+  const [searchInput, setSearchInput] = useState("");
+  const handleChange = (e) => {
+    e.preventDefault();
+    setSearchInput(e.target.value);
+  };
+
+  if (searchInput.length > 0) {
+    data.filter((dat) => {
+      console.log(dat.title.match(searchInput))
+      return dat.title.match(searchInput);
+    });
+  }
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -115,6 +126,8 @@ export function Navigator() {
                   placeholder="Search"
                   className="me-2"
                   aria-label="Search"
+                  onChange={handleChange}
+                  value={searchInput}
                 />
                 <Button variant="outline-success">Search</Button>
               </Form>
@@ -153,7 +166,9 @@ export const Users = ({ data }) => {
             <td>{v.id}</td>
             <td>{v.title}</td>
             <td>
-              <img src={v.completed} alt={v.completed} style={{ width: '60px' }} />
+              <div className='badge bg-dark'>
+                <img src={`./logo192.png`} alt={''} style={{ width: '20px' }} />
+              </div>
             </td>
             <td>
               <Button variant='dark' size='sm' as={Link} to={`/ViewDetail/${v.id}`}>View Detail</Button>
